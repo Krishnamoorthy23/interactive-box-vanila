@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Boxes</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .box {
+      background-color: #ffffff;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .box.expanded {
+      background-color: #f0f8ff;
+    }
+
+    .box-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: none;
+      margin-top: 15px;
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    .box.expanded .options {
+      display: block;
+    }
+
+    .section-label {
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .color-options, .size-options {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .color-swatch {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .color-swatch.selected {
+      border-color: #000;
+    }
+
+    .size-button {
+      padding: 6px 12px;
+      border: 2px solid #888;
+      border-radius: 5px;
+      background-color: white;
+      cursor: pointer;
+    }
+
+    .size-button.selected {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 500px) {
+      .color-options, .size-options {
+        gap: 6px;
+      }
+
+      .size-button {
+        font-size: 14px;
+        padding: 5px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="box" id="box-top">
+      <div class="box-title">Top Box</div>
+      <div class="options">
+        <div class="section-label">Choose Color:</div>
+        <div class="color-options">
+          <div class="color-swatch" data-color="red" style="background-color: red;"></div>
+          <div class="color-swatch" data-color="blue" style="background-color: blue;"></div>
+          <div class="color-swatch" data-color="green" style="background-color: green;"></div>
+          <div class="color-swatch" data-color="yellow" style="background-color: yellow;"></div>
+        </div>
+        <div class="section-label">Choose Size:</div>
+        <div class="size-options">
+          <button class="size-button" data-size="S">S</button>
+          <button class="size-button" data-size="M">M</button>
+          <button class="size-button" data-size="L">L</button>
+          <button class="size-button" data-size="XL">XL</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="box" id="box-middle">
+      <div class="box-title">Middle Box</div>
+      <div class="options">
+        <div class="section-label">Choose Color:</div>
+        <div class="color-options">
+          <div class="color-swatch" data-color="red" style="background-color: red;"></div>
+          <div class="color-swatch" data-color="blue" style="background-color: blue;"></div>
+          <div class="color-swatch" data-color="green" style="background-color: green;"></div>
+          <div class="color-swatch" data-color="yellow" style="background-color: yellow;"></div>
+        </div>
+        <div class="section-label">Choose Size:</div>
+        <div class="size-options">
+          <button class="size-button" data-size="S">S</button>
+          <button class="size-button" data-size="M">M</button>
+          <button class="size-button" data-size="L">L</button>
+          <button class="size-button" data-size="XL">XL</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="box" id="box-bottom">
+      <div class="box-title">Bottom Box</div>
+      <div class="options">
+        <div class="section-label">Choose Color:</div>
+        <div class="color-options">
+          <div class="color-swatch" data-color="red" style="background-color: red;"></div>
+          <div class="color-swatch" data-color="blue" style="background-color: blue;"></div>
+          <div class="color-swatch" data-color="green" style="background-color: green;"></div>
+          <div class="color-swatch" data-color="yellow" style="background-color: yellow;"></div>
+        </div>
+        <div class="section-label">Choose Size:</div>
+        <div class="size-options">
+          <button class="size-button" data-size="S">S</button>
+          <button class="size-button" data-size="M">M</button>
+          <button class="size-button" data-size="L">L</button>
+          <button class="size-button" data-size="XL">XL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const boxes = document.querySelectorAll(".box");
+
+    boxes.forEach(box => {
+      box.addEventListener("click", function (e) {
+        // Prevent child buttons from triggering box toggle
+        if (e.target.closest('.size-button') || e.target.closest('.color-swatch')) return;
+
+        this.classList.toggle("expanded");
+      });
+
+      const colorSwatches = box.querySelectorAll(".color-swatch");
+      colorSwatches.forEach(swatch => {
+        swatch.addEventListener("click", function (e) {
+          e.stopPropagation(); // prevent triggering box toggle
+          colorSwatches.forEach(s => s.classList.remove("selected"));
+          this.classList.add("selected");
+        });
+      });
+
+      const sizeButtons = box.querySelectorAll(".size-button");
+      sizeButtons.forEach(button => {
+        button.addEventListener("click", function (e) {
+          e.stopPropagation();
+          sizeButtons.forEach(btn => btn.classList.remove("selected"));
+          this.classList.add("selected");
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
